@@ -5,6 +5,76 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine Proposal</title>
 <style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        font-family: sans-serif;
+    }
+
+    /* Glassmorphism container */
+    .glass-box {
+        position: relative;
+        width: 300px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+        color: white;
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    /* Emoji bubbles container */
+    .bubbles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .bubble {
+        position: absolute;
+        bottom: -50px;
+        font-size: 2rem;
+        animation: rise 8s linear infinite;
+        opacity: 0.8;
+    }
+
+    /* Floating animation */
+    @keyframes rise {
+        0% {
+            transform: translateY(0) scale(1);
+            opacity: 0.8;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-110vh) scale(1.2);
+            opacity: 0;
+        }
+    }
+
     .cursive-text {
         font-family: "Dancing Script", cursive;
         color: darkred;
@@ -21,7 +91,7 @@
         padding: 10px 20px;
         font-size: 16px;
         margin: 10px;
-        transition: all 0.3s ease; /* Smooth size change */
+        transition: all 0.5s ease; /* Smooth size change */
         cursor: pointer;
     }
     /* Heartbeat button styling */
@@ -31,11 +101,11 @@
         border: none;
         padding: 15px 30px;
         font-size: 18px;
-        border-radius: 8px;
+        border-radius: 50px;
         cursor: pointer;
         outline: none;
-        animation: heartbeat 1.5s infinite;
-        transition: background-color 0.3s ease;
+        animation: heartbeat 2s infinite;
+        transition: background-color 0.8s ease;
     }
 
     /* Hover effect */
@@ -54,14 +124,27 @@
     }
 
     #noBtn {
-        background-color: #f44336;
+        background-color: gray;
         color: white;
         border: none;
         border-radius: 5px;
     }
+
+    noBtn:hover {
+        opacity: 0.85;
+    }
 </style>
 </head>
 <body>
+
+<!-- Emoji bubbles -->
+<div class="bubbles" id="bubbles"></div>
+
+<!-- Glassy content box -->
+<div class="glass-box">
+    🌸 Glassy Pink Vibes 🌸
+</div>
+
 
 <h2 class="cursive-text">Will you be my valentine?</h2>
 
@@ -73,6 +156,8 @@
     const texts = ["Click Me", "Hello!", "You clicked again!", "Keep going...", "Back to start"];
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
+    const emojis = ["🌸", "💖", "💕", "💗", "💓", "💞", "🌷", "🌺"];
+    const bubblesContainer = document.getElementById("bubbles");
 
     let index = 0;
 
@@ -108,6 +193,24 @@
     const imageUrl = "https://codeerkeshav.github.io/dgbemyvalentine.guthub.io/invite.jpg";
     window.open(imageUrl, "_blank");
   }
+
+    function createBubble() {
+        const bubble = document.createElement("div");
+        bubble.classList.add("bubble");
+        bubble.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        bubble.style.left = Math.random() * 100 + "vw";
+        bubble.style.animationDuration = (5 + Math.random() * 5) + "s";
+        bubble.style.fontSize = (1.5 + Math.random() * 2) + "rem";
+        bubblesContainer.appendChild(bubble);
+
+        // Remove bubble after animation
+        setTimeout(() => {
+            bubble.remove();
+        }, 10000);
+    }
+
+    // Create bubbles continuously
+    setInterval(createBubble, 500);
 </script>
 
 </body>
