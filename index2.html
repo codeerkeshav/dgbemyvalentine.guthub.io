@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>No Button Increases Yes Button</title>
+<title>Valentine Proposal</title>
 <style>
     .cursive-text {
-        font-family: "Homemade Apple", cursive;
+        font-family: "Dancing Script", cursive;
         color: darkred;
         text-align: center;
         padding-top: 20%;
@@ -25,10 +25,23 @@
         cursor: pointer;
     }
     #yesBtn {
-        background-color: #4CAF50;
+        background: linear-gradient(135deg, var(--deep-rose), var(--rose-pink);
         color: white;
         border: none;
         border-radius: 5px;
+        animation: yes-pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes yes-pulse {
+        0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 8px 25px rgba(230, 57, 98, 0.4);
+        }
+        
+        50% {
+            transform: scale(1.10);
+            box-shadow: 0 12px 35px rgba(230, 57, 98, 0.6), 0 0px 50px rgba(255, 107, 138, 0.3);
+        }
     }
     #noBtn {
         background-color: #f44336;
@@ -63,8 +76,8 @@
         let yesHeight = yesBtn.offsetHeight;
 
         // Increase size by 20px each click
-        yesWidth += 20;
-        yesHeight += 10;
+        yesWidth += 120;
+        yesHeight += 60;
     
         // Get window size
         const maxWidth = window.innerWidth - 40; // padding margin
