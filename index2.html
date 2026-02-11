@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No Button Increases Yes Button</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 50px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        margin: 10px;
+        transition: all 0.3s ease; /* Smooth size change */
+        cursor: pointer;
+    }
+    #yesBtn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+    #noBtn {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+</style>
+</head>
+<body>
+
+<h2>Click "No" to make "Yes" bigger!</h2>
+
+<button id="yesBtn">Yes</button>
+<button id="noBtn">No</button>
+
+<script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+
+    noBtn.addEventListener('click', () => {
+        // Get current font size of Yes button
+        let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+        let currentPadding = parseFloat(window.getComputedStyle(yesBtn).padding);
+
+        // Increase size by 2px each click
+        yesBtn.style.fontSize = (currentSize + 2) + 'px';
+        yesBtn.style.padding = (currentPadding + 2) + 'px ' + (currentPadding + 6) + 'px';
+    });
+</script>
+
+</body>
+</html>
