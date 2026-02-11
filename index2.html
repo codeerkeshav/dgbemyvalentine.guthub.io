@@ -59,14 +59,26 @@
         index = (index + 1) % texts.length;
         noBtn.textContent = texts[index];
         
-        // Get current font size of Yes button
-        let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
-        let currentPadding = parseFloat(window.getComputedStyle(yesBtn).padding);
+        let yesWidth = yesBtn.offsetWidth;
+        let yesHeight = yesBtn.offsetHeight;
 
-        // Increase size by 2px each click
-        yesBtn.style.fontSize = (currentSize + 15) + 'px';
-        yesBtn.style.padding = (currentPadding + 15) + 'px ' + (currentPadding + 6) + 'px';
-    });
+        // Increase size by 20px each click
+        yesWidth += 20;
+        yesHeight += 10;
+    
+        // Get window size
+        const maxWidth = window.innerWidth - 40; // padding margin
+        const maxHeight = window.innerHeight - 40;
+    
+        // Apply new size but limit to window size
+        yesBtn.style.width = Math.min(yesWidth, maxWidth) + 'px';
+        yesBtn.style.height = Math.min(yesHeight, maxHeight) + 'px';
+    
+        // Remove "No" button if limit reached
+        if (yesWidth >= maxWidth || yesHeight >= maxHeight) {
+          noBtn.remove();
+        }
+  });
     
     function openImage() {
     // Replace with your image URL
