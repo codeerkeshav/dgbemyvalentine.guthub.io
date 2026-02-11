@@ -6,7 +6,8 @@
 <title>No Button Increases Yes Button</title>
 <style>
     .cursive-text {
-        font-family: "Brush Script MT", "Lucida Handwriting", cursive;
+        font-family: "Homemade Apple", cursive;
+        color: darkred;
         text-align: center;
         padding-top: 20%;
     }
@@ -45,10 +46,19 @@
 <button id="noBtn">No</button>
 
 <script>
+
+    const texts = ["Click Me", "Hello!", "You clicked again!", "Keep going...", "Back to start"];
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
 
+    let index = 0;
+
     noBtn.addEventListener('click', () => {
+
+        // Move to the next text index
+        index = (index + 1) % texts.length;
+        button.textContent = texts[index];
+        
         // Get current font size of Yes button
         let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
         let currentPadding = parseFloat(window.getComputedStyle(yesBtn).padding);
