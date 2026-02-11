@@ -24,6 +24,39 @@ body{
     align-items:center;
     text-align:center;
     color:white;
+    position:relative;
+}
+
+/* Audio Button */
+#audioControl{
+    position:absolute;
+    top:15px;
+    right:15px;
+    background:white;
+    color:#e63946;
+    border:none;
+    padding:8px 15px;
+    border-radius:20px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+/* Credit */
+#credit{
+    position:absolute;
+    bottom:10px;
+    right:15px;
+    font-size:12px;
+}
+
+#credit a{
+    color:white;
+    text-decoration:none;
+    font-weight:500;
+}
+
+#credit a:hover{
+    text-decoration:underline;
 }
 
 /* Container */
@@ -40,21 +73,18 @@ body{
     }
 }
 
-/* Romantic Title */
 h1{
     font-family:'Dancing Script',cursive;
     font-size:clamp(30px,7vw,50px);
     margin-bottom:20px;
 }
 
-/* Typewriter Text */
 #message{
     font-size:clamp(16px,4vw,20px);
     min-height:60px;
     margin-bottom:30px;
 }
 
-/* Buttons */
 .buttons{
     display:flex;
     gap:20px;
@@ -112,36 +142,6 @@ button{
     to{transform:translateY(-110vh); opacity:0;}
 }
 
-/* Celebration Screen */
-#celebration{
-    position:absolute;
-    inset:0;
-    background:linear-gradient(135deg,#ff758c,#ff7eb3);
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    opacity:0;
-    pointer-events:none;
-    transition:1s ease;
-}
-
-#celebration.show{
-    opacity:1;
-    pointer-events:auto;
-}
-
-#celebration h2{
-    font-family:'Dancing Script',cursive;
-    font-size:clamp(35px,8vw,60px);
-    animation:pop 1s ease forwards;
-}
-
-@keyframes pop{
-    from{transform:scale(0);}
-    to{transform:scale(1);}
-}
-
 /* Mobile */
 @media(max-width:480px){
     .buttons{
@@ -155,6 +155,14 @@ button{
 </head>
 <body>
 
+<!-- Background Music -->
+<audio id="bgMusic" loop>
+    <!-- Replace with your hosted mp3 link -->
+    <source src="https://audio.com/risk-master/audio/ed-sheeran-perfect-official-music-video-ed-sheeran" type="audio/mpeg">
+</audio>
+
+<button id="audioControl">🔊 Music</button>
+
 <div class="container">
     <h1>Hey Beautiful 💕</h1>
     <div id="message"></div>
@@ -165,8 +173,9 @@ button{
     </div>
 </div>
 
-<div id="celebration">
-    <h2>She Said YES! 💍💖</h2>
+<div id="credit">
+    Created with ❤️ by
+    <a href="https://www.instagram.com/ishaaaannnnkkk" target="_blank">Adrak</a>
 </div>
 
 <script>
@@ -174,7 +183,8 @@ const messageText = "From the moment I met you, my world became brighter... Will
 const messageEl = document.getElementById("message");
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
-const celebration = document.getElementById("celebration");
+const audio = document.getElementById("bgMusic");
+const audioBtn = document.getElementById("audioControl");
 
 let i = 0;
 
@@ -188,6 +198,17 @@ function typeWriter(){
 }
 typeWriter();
 
+/* Audio Toggle */
+audioBtn.addEventListener("click",()=>{
+    if(audio.paused){
+        audio.play();
+        audioBtn.textContent="🔊 Music";
+    } else {
+        audio.pause();
+        audioBtn.textContent="🔇 Muted";
+    }
+});
+
 /* No Button runs away */
 noBtn.addEventListener("mouseover",()=>{
     const x = Math.random() * (window.innerWidth - 100);
@@ -197,9 +218,10 @@ noBtn.addEventListener("mouseover",()=>{
     noBtn.style.top=y+"px";
 });
 
-/* Yes Button Celebration */
+/* Yes Button opens image */
 yesBtn.addEventListener("click",()=>{
-    celebration.classList.add("show");
+    const imageUrl = "https://codeerkeshav.github.io/dgbemyvalentine.guthub.io/invite.jpg"; // 🔁 Replace with your image link
+    window.open(imageUrl, "_blank");
 });
 
 /* Floating hearts */
