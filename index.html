@@ -293,6 +293,7 @@ const closeScroll = document.getElementById("closeScroll");
 const container = document.querySelector(".container");
 
 /* Prompts for No button */
+/* Prompts for No button */
 const noPrompts = [
     "Why not? 😢",
     "Are you sure? 😔",
@@ -300,7 +301,9 @@ const noPrompts = [
     "Here are some flowers for you 🪻",
     "Okay, sunflower it is 🌻"
 ];
+
 let clickCount = 0;
+
 
 /* Auto play audio */
 window.addEventListener('load', () => {
@@ -318,14 +321,24 @@ audioBtn.addEventListener("click", () => {
     }
 });
 
-/* No Button Logic */
+/* No Button Click Logic */
 noBtn.addEventListener("click", () => {
+
     if (clickCount < noPrompts.length) {
+        // Update the NO button text
         noBtn.textContent = noPrompts[clickCount];
         clickCount++;
-    }
-    if (clickCount === noPrompts.length) {
-        noBtn.remove();
+
+        // If this was the last prompt, remove button on next click
+        if (clickCount === noPrompts.length) {
+            setTimeout(() => {
+                noBtn.style.opacity = "0";
+                noBtn.style.transform = "scale(0.8)";
+                setTimeout(() => {
+                    noBtn.remove();
+                }, 300);
+            }, 600); // short delay so user sees final message
+        }
     }
 });
 
