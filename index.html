@@ -143,71 +143,93 @@ button{
 }
 
 /* Scroll Reveal Modal */
-#scrollReveal{
+/* Overlay Background */
+#scrollOverlay{
     position:fixed;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%) scale(0.8);
-    width:90%;
-    max-width:600px;
-    max-height:80%;
-    background:radial-gradient(circle at center,#fdf6e3,#f7e7ce);
-    box-shadow:0 20px 40px rgba(0,0,0,0.5);
-    border-radius:15px;
-    display:none;
-    flex-direction:column;
-    overflow:auto;
-    z-index:999;
-    opacity:0;
-    transition:transform 1s ease, opacity 1s ease;
-}
-
-/* Scroll Paper */
-.scroll-paper{
-    padding:3vh 3vw;
+    inset:0;
+    backdrop-filter:blur(15px);
+    background:rgba(0,0,0,0.4);
     display:flex;
     justify-content:center;
     align-items:center;
+    z-index:999;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.8s ease;
+}
+
+/* Glassy Scroll */
+#scrollReveal{
+    position:relative;
+    width:90%;
+    max-width:600px;
+    max-height:85vh;
+    padding:30px 20px 60px 20px;
+    border-radius:25px;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(25px);
+    border:1px solid rgba(255,255,255,0.3);
+    box-shadow:0 25px 50px rgba(0,0,0,0.4);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    transform:scale(0.8);
+    transition:transform 1s ease;
+}
+
+/* Show State */
+#scrollOverlay.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+#scrollOverlay.active #scrollReveal{
+    transform:scale(1);
+}
+
+/* Close Button at Edge */
+#closeScroll{
+    position:absolute;
+    top:-15px;
+    right:-15px;
+    background:#e63946;
+    color:white;
+    border:none;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:16px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* Scroll Image */
+.scroll-paper{
+    width:100%;
+    display:flex;
+    justify-content:center;
 }
 
 .scroll-paper img{
     width:100%;
-    height:auto;
-    max-height:70vh;
-    border-radius:1vw;
-    box-shadow:0 10px 20px rgba(0,0,0,0.2);
-}
-
-/* Close button */
-#closeScroll{
-    position:absolute;
-    top:10px;
-    right:15px;
-    background:#e63946;
-    color:white;
-    border:none;
-    padding:8px 12px;
+    max-height:60vh;
     border-radius:20px;
-    cursor:pointer;
-    font-size:14px;
-    z-index:1000;
+    box-shadow:0 15px 35px rgba(0,0,0,0.3);
 }
 
-/* Mobile adjustments */
-@media(max-width:480px){
-    .buttons{
-        flex-direction:column;
-    }
-    button{
-        width:100%;
-    }
-    #scrollReveal{
-        width:95%;
-        max-height:85%;
-    }
-    .scroll-paper{
-        padding:3vw;
-    }
+/* Countdown */
+#countdown{
+    margin-top:20px;
+    font-size:14px;
+    color:white;
+    text-align:center;
+}
+
+#timer{
+    margin-top:8px;
+    font-size:18px;
+    font-weight:500;
+    letter-spacing:1px;
 }
 </style>
 </head>
@@ -237,12 +259,21 @@ button{
 </div>
 
 <!-- Scroll Reveal Modal -->
-<div id="scrollReveal">
-    <button id="closeScroll">✖ Close</button>
-    <div class="scroll-paper">
-        <img src="https://codeerkeshav.github.io/DikshaWillYouBeMyValentine/invite.jpg" alt="Our Special Moment">
+<div id="scrollOverlay">
+    <div id="scrollReveal">
+        <button id="closeScroll">✖</button>
+
+        <div class="scroll-paper">
+            <img src="https://codeerkeshav.github.io/DikshaWillYouBeMyValentine/invite.jpg" alt="Our Special Moment">
+        </div>
+
+        <div id="countdown">
+            ⏳ Counting down to 14 Feb 2026 • 6:00 PM
+            <div id="timer"></div>
+        </div>
     </div>
 </div>
+
 
 <script>
 const messageEl = document.getElementById("message");
@@ -291,42 +322,30 @@ noBtn.addEventListener("click", () => {
     }
 });
 
+const scrollOverlay = document.getElementById("scrollOverlay");
+
 /* YES Button */
 yesBtn.addEventListener("click", () => {
 
-    // Smoothly hide main container (no layout break)
     container.style.opacity = "0";
     container.style.pointerEvents = "none";
 
-    // Heart shower
-    createHeartShower(100);
+    createHeartShower(120);
 
-    // Show scroll after delay
     setTimeout(() => {
-        scrollReveal.style.display = "flex";
-
-        setTimeout(() => {
-            scrollReveal.style.opacity = "1";
-            scrollReveal.style.transform = "translate(-50%, -50%) scale(1)";
-        }, 50);
-
+        scrollOverlay.classList.add("active");
     }, 1200);
 });
 
 /* Close Scroll */
 closeScroll.addEventListener("click", () => {
 
-    scrollReveal.style.opacity = "0";
-    scrollReveal.style.transform = "translate(-50%, -50%) scale(0.8)";
+    scrollOverlay.classList.remove("active");
 
     setTimeout(() => {
-        scrollReveal.style.display = "none";
-
-        // Restore container properly
         container.style.opacity = "1";
         container.style.pointerEvents = "auto";
-
-    }, 500);
+    }, 800);
 });
 
 /* Floating Hearts */
@@ -357,6 +376,30 @@ function createHeartShower(count){
         }, i*40);
     }
 }
+/* Countdown to 14 Feb 2026, 6:00 PM */
+const targetDate = new Date("February 14, 2026 18:00:00").getTime();
+const timerElement = document.getElementById("timer");
+
+setInterval(() => {
+
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    if(distance <= 0){
+        timerElement.innerHTML = "💖 It's Our Special Moment 💖";
+        return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    timerElement.innerHTML = 
+        `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+}, 1000);
+
 </script>
 </body>
 </html>
