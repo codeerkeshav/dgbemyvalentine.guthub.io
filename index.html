@@ -252,6 +252,7 @@ const audio = document.getElementById("bgMusic");
 const audioBtn = document.getElementById("audioControl");
 const scrollReveal = document.getElementById("scrollReveal");
 const closeScroll = document.getElementById("closeScroll");
+const container = document.querySelector(".container");
 
 /* Prompts for No button */
 const noPrompts = [
@@ -263,7 +264,7 @@ const noPrompts = [
 ];
 let clickCount = 0;
 
-/* Auto play audio on page load */
+/* Auto play audio */
 window.addEventListener('load', () => {
     audio.play().catch(err => console.log("Autoplay blocked:", err));
 });
@@ -279,7 +280,7 @@ audioBtn.addEventListener("click", () => {
     }
 });
 
-/* No Button Click Logic */
+/* No Button Logic */
 noBtn.addEventListener("click", () => {
     if (clickCount < noPrompts.length) {
         noBtn.textContent = noPrompts[clickCount];
@@ -290,36 +291,45 @@ noBtn.addEventListener("click", () => {
     }
 });
 
-/* Yes Button - Show scroll with heart shower */
+/* YES Button */
 yesBtn.addEventListener("click", () => {
 
-    // Hide main container
-    document.querySelector(".container").style.display = "none";
+    // Smoothly hide main container (no layout break)
+    container.style.opacity = "0";
+    container.style.pointerEvents = "none";
 
     // Heart shower
     createHeartShower(100);
 
-    // Show scroll after a short delay (slow reveal)
+    // Show scroll after delay
     setTimeout(() => {
         scrollReveal.style.display = "flex";
+
         setTimeout(() => {
             scrollReveal.style.opacity = "1";
             scrollReveal.style.transform = "translate(-50%, -50%) scale(1)";
-        }, 100);
-    }, 1500);
+        }, 50);
+
+    }, 1200);
 });
 
-/* Close scroll */
+/* Close Scroll */
 closeScroll.addEventListener("click", () => {
+
     scrollReveal.style.opacity = "0";
     scrollReveal.style.transform = "translate(-50%, -50%) scale(0.8)";
+
     setTimeout(() => {
         scrollReveal.style.display = "none";
-        document.querySelector(".container").style.display = "flex";
+
+        // Restore container properly
+        container.style.opacity = "1";
+        container.style.pointerEvents = "auto";
+
     }, 500);
 });
 
-/* Floating hearts */
+/* Floating Hearts */
 function createHeart(){
     const heart = document.createElement("div");
     heart.classList.add("heart");
@@ -331,7 +341,7 @@ function createHeart(){
 }
 setInterval(createHeart,500);
 
-/* Heart shower for scroll reveal */
+/* Heart Shower */
 function createHeartShower(count){
     for(let i=0;i<count;i++){
         setTimeout(()=>{
@@ -344,7 +354,7 @@ function createHeartShower(count){
             heart.style.animationDuration = (3+Math.random()*2)+"s";
             document.body.appendChild(heart);
             setTimeout(()=>heart.remove(),4000);
-        }, i*50);
+        }, i*40);
     }
 }
 </script>
