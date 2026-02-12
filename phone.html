@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📱 Kaddu got new 1 message</title>
+<title>📱 Kaddu got 1 new message</title>
 
 <style>
 body {
@@ -14,6 +14,19 @@ body {
     align-items: center;
     background: linear-gradient(135deg, #f3d9e4, #e4c7d4);
     font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+}
+
+/* Fade out effect */
+.fade-out {
+    animation: fadeOut 0.8s forwards ease;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        transform: scale(0.95);
+    }
 }
 
 /* Wrapper */
@@ -34,7 +47,6 @@ body {
     animation: subtleVibrate 2s infinite ease-in-out;
 }
 
-/* Screen */
 .screen {
     position: absolute;
     top: 18px;
@@ -46,7 +58,6 @@ body {
     border-radius: 25px;
 }
 
-/* Speaker */
 .speaker {
     position: absolute;
     top: 8px;
@@ -71,12 +82,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    text-decoration: none;
+    cursor: pointer;
     animation: floatIn 1.2s ease forwards;
     transition: all 0.3s ease;
 }
 
-/* Bubble tail */
 .bubble::after {
     content: "";
     position: absolute;
@@ -89,38 +99,28 @@ body {
     border-radius: 5px;
 }
 
-/* Hover smooth */
 .bubble:hover {
     transform: translateY(-5px) scale(1.08);
     box-shadow: 0 15px 35px rgba(226,85,161,0.4);
 }
 
-/* Heart */
 .heart {
     font-size: 34px;
     color: #e255a1;
     animation: heartbeat 1.5s infinite;
 }
 
-/* Smooth float-in */
+/* Animations */
 @keyframes floatIn {
-    0% {
-        opacity: 0;
-        transform: translateY(20px) scale(0.8);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+    0% { opacity: 0; transform: translateY(20px) scale(0.8); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Subtle vibration */
 @keyframes subtleVibrate {
     0%, 100% { transform: rotate(0deg); }
     50% { transform: rotate(0.8deg); }
 }
 
-/* Heart beat */
 @keyframes heartbeat {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.15); }
@@ -130,17 +130,40 @@ body {
 
 <body>
 
-<div class="wrapper">
+<div class="wrapper" id="wrapper">
     <div class="phone">
         <div class="speaker"></div>
         <div class="screen"></div>
     </div>
 
-    <!-- Clickable Smooth Bubble -->
-    <a href="index.html" class="bubble">
+    <div class="bubble" onclick="openNotification()">
         <div class="heart">❤</div>
-    </a>
+    </div>
 </div>
+
+<!-- Sound (royalty-free notification sound URL) -->
+<audio id="notifSound" src="https://assets.mixkit.co/sfx/preview/mixkit-bell-notification-933.mp3"></audio>
+
+<script>
+function openNotification() {
+    const sound = document.getElementById("notifSound");
+    const wrapper = document.getElementById("wrapper");
+
+    // Play sound
+    sound.play();
+
+    // Stop vibration
+    document.querySelector(".phone").style.animation = "none";
+
+    // Fade out
+    wrapper.classList.add("fade-out");
+
+    // Redirect after animation
+    setTimeout(() => {
+        window.location.href = "question.html";
+    }, 800);
+}
+</script>
 
 </body>
 </html>
